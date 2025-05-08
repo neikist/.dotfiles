@@ -1,0 +1,101 @@
+%YAML 1.1
+---
+name: NeikistContinueConfig
+version: 0.0.1
+schema: v1
+
+local_ollama: &local_ollama
+  provider: ollama
+  apiBase: http://localhost:11434
+
+home_ollama_server: &home_ollama_server
+  provider: ollama
+  apiBase: http://$HOME_OLLAMA_SERVER_ADDRESS:$HOME_OLLAMA_SERVER_PORT
+
+openrouter: &openrouter
+  provider: openrouter
+  apiBase: https://openrouter.ai/api/v1
+  apiKey: $OPEN_ROUTER_API_KEY
+
+models:
+  - name: granite-embedding
+    <<: *local_ollama
+    model: granite-embedding:278m
+    roles:
+      - embed
+
+  - name: qwen2.5-coder 1.5b local
+    <<: *local_ollama
+    model: qwen2.5-coder:1.5b-instruct-q8.0
+    defaultCompletionOptions:
+      contextLength: 3072
+      maxTokens: 256
+      temperature: 0.3
+      n: 1
+    roles:
+      - autocomplete
+
+  - name: qwen2.5-coder 7b local
+    <<: *local_ollama
+    model: qwen2.5-coder:7b-instruct
+    roles:
+      - edit
+      - chat
+      - apply
+      - summarize
+
+  - name: qwen3 30b-a3b local
+    <<: *local_ollama
+    model: qwen3:30b-a3b
+    roles:
+      - chat
+   
+  - name: qwen2.5-coder 7b on home server
+    <<: *home_ollama_server
+    model: qwen2.5-coder:7b-instruct-q8_0
+    defaultCompletionOptions:
+      contextLength: 3072
+      maxTokens: 256
+      temperature: 0.3
+      n: 1
+    roles:
+      - autocomplete
+      - edit
+      - chat
+      - apply
+      - summarize
+ 
+  - name: qwen2.5-coder 14b on home server
+    <<: *home_ollama_server
+    model: qwen2.5-coder:14b-instruct
+    defaultCompletionOptions:
+      contextLength: 3072
+      maxTokens: 256
+      temperature: 0.3
+      n: 1
+    roles:
+      - autocomplete
+      - edit
+      - chat
+      - apply
+      - summarize
+
+  - name: Claude 3.7 sonnet
+    <<: *openrouter
+    model: anthropic/claude-3.7-sonnet:beta
+    roles:
+      - edit
+      - chat
+      - apply
+      - summarize
+
+context:
+  - provider: file
+  - provider: code
+  - provider: codebase
+    params:
+      nFinal: 10
+  - provider: docs
+  - provider: diff
+  - provider: folder
+  - provider: terminal
