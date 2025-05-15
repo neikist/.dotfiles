@@ -52,7 +52,7 @@ models:
    
   - name: qwen2.5-coder 7b on home server
     <<: *home_ollama_server
-    model: qwen2.5-coder:7b-instruct-q8_0
+    model: qwen2.5-coder:7b-base-q8_0
     defaultCompletionOptions:
       contextLength: 3072
       maxTokens: 256
