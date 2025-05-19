@@ -10,7 +10,7 @@ local_ollama: &local_ollama
 
 home_ollama_server: &home_ollama_server
   provider: ollama
-  apiBase: http://$HOME_OLLAMA_SERVER_ADDRESS:$HOME_OLLAMA_SERVER_PORT
+  apiBase: $HOME_OLLAMA_SERVER
 
 openrouter: &openrouter
   provider: openrouter
