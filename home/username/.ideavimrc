@@ -1,0 +1,5 @@
+set clipboard=unnamed
+set incsearch
+
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
